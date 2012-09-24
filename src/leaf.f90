@@ -342,6 +342,7 @@ contains
     vj  = ( bee - sqrt( bee**2 - 4.0 * theta * alphaj * par * vjmax ) ) / ( 2.0 * theta )
     ! determine RuBP regeneration limited carboxylation rate...
     wj  = vj * ci / ( 4.5 * ci + 10.5 * gamma1 )
+    !!! This is where Fs calculations appear
     ! determine limiting carboxylation rate...
     vc  = min( wc , wj )
     ! net photosynthetic rate... 
@@ -350,6 +351,35 @@ contains
     farquhar = an
 
   end function farquhar
+  !
+  !----------------------------------------------------------------------
+  !
+  !
+  real function fluorescence ( Je, Jo )
+
+    !  simple fluorescence model !
+    !! From 
+    !http://www.kiss.caltech.edu/workshops/photosynthesis2012/presentations/baker.pdf
+
+    implicit none
+
+    ! arguments..
+    real,intent(in) :: Je, Jo
+
+    ! local variables..
+    real, parameter :: kf = 0.05
+    real, parameter :: kd = 0.95
+    real, parameter :: kp = 4.0
+    real :: kn, fo, fm
+
+    !photosynthesis yield = Je/Jo = x
+    x = Je/Jo
+    kn = 0.05043 * exp(5.1473 (1-x))
+    fo = kf / (kf+kd+kn+kp)
+    fm = kf / (kf+kd+kn)
+    dfv = 0.8 * fm * x
+    fluorescence = fm - dfv
+  end function fluorescence
   !
   !----------------------------------------------------------------------
   !

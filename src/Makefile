@@ -70,13 +70,15 @@ INC_NC=$(strip $(include_netcdf))
 ifeq ($(INC_NC),true)	# combine all linker flags
 	NC_PREPROCESSOR_FLAG = -D USE_NETCDF
 	NC_INC_DIR = $(shell nc-config --prefix)/include
+	NC_INC_DIR = /usr/include
 	NC_LIB_DIR = $(shell nc-config --prefix)/lib
+	NC_LIB_DIR = /usr/lib
 	NC_LINK_FLAGS = -L$(NC_LIB_DIR) -lnetcdf -lnetcdff
 endif
 ifeq ($(FC),gfortran)
-	NC_INC_FLAGS = -I$(ncpath)/include -I/usr/lib64/gfortran/modules/
+	NC_INC_FLAGS = -I/usr/include -I/usr/lib64/gfortran/modules/
 else
-	NC_INC_FLAGS = -I$(ncpath)/include
+	NC_INC_FLAGS = -I/usr/include
 endif
 
 FC_FLAGS   = $($(FC)_$(COMP)) $(NC_PREPROCESSOR_FLAG)
