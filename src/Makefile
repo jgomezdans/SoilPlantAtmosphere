@@ -1,6 +1,6 @@
 #### Settings..
 
-compiler       = ifort # ifort or gfortran
+compiler       = gfortran # ifort or gfortran
 compiler_flags = debug    # normal, debug, or timing
 linker_style   = dynamic  # dynamic or static
 include_netcdf = false    # true or false
